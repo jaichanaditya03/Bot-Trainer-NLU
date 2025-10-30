@@ -17,12 +17,26 @@ AuthorizationHeader = Annotated[Optional[str], Header(alias="Authorization")]
 
 @router.post("/datasets", status_code=status.HTTP_201_CREATED)
 def save_dataset(data: DatasetPayload, authorization: AuthorizationHeader = None):
-    """Persist processed dataset summary for a user"""
+    """Persist dataset summary and extract sentences separately"""
     if not authorization:
         raise HTTPException(status_code=401, detail="Missing Authorization header")
 
     token = authorization.replace("Bearer ", "")
     decoded = decode_token(token)
+
+    # Extract sentences from sample data in analysis
+    sentences = []
+    if data.analysis and "sample" in data.analysis:
+        sample_data = data.analysis["sample"]
+        if isinstance(sample_data, list) and len(sample_data) > 0:
+            # Find text/utterance field
+            first_record = sample_data[0]
+            text_fields = [k for k in first_record.keys() if any(keyword in k.lower() for keyword in ["text", "utterance", "sentence", "query", "message"])]
+            
+            if text_fields:
+                text_field = text_fields[0]
+                sentences = [str(record.get(text_field, "")).strip() for record in sample_data if record.get(text_field)]
+                sentences = [s for s in sentences if s]  # Remove empty strings
 
     checksum = data.checksum or jwt.encode({"filename": data.filename, "timestamp": datetime.utcnow().timestamp()}, JWT_SECRET, algorithm=JWT_ALGO)
     entry = {
@@ -30,6 +44,8 @@ def save_dataset(data: DatasetPayload, authorization: AuthorizationHeader = None
         "filename": data.filename,
         "analysis": data.analysis,
         "evaluation": data.evaluation,
+        "sentences": sentences,  # Store extracted sentences separately
+        "sentence_count": len(sentences),  # Store count for reference
         "updated_at": datetime.utcnow(),
         "checksum": checksum,
     }
