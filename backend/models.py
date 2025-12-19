@@ -1,6 +1,4 @@
-"""
-Pydantic models for request/response validation
-"""
+
 from pydantic import BaseModel, EmailStr, field_validator, ConfigDict
 from typing import Optional, Any, Dict
 import re
@@ -11,6 +9,7 @@ class RegisterRequest(BaseModel):
     username: str
     email: EmailStr
     password: str
+    is_admin: bool = False  # Optional field for admin registration
 
     @field_validator("username")
     @classmethod
@@ -61,6 +60,7 @@ class DatasetPayload(BaseModel):
     analysis: Dict[str, Any]
     evaluation: Dict[str, Any]
     checksum: Optional[str] = None
+    workspace_id: Optional[str] = None
 
     model_config = ConfigDict(extra="ignore")
 
@@ -69,3 +69,22 @@ class DatasetSelection(BaseModel):
     """Dataset selection request model"""
     checksum: str
     filename: Optional[str] = None
+
+
+class WorkspaceCreate(BaseModel):
+    """Create a workspace"""
+    name: str
+    description: Optional[str] = ""
+
+    @field_validator("name")
+    @classmethod
+    def name_not_blank(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("Workspace name cannot be empty.")
+        return value
+
+
+class WorkspaceSelect(BaseModel):
+    """Select active workspace"""
+    workspace_id: str

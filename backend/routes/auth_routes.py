@@ -21,6 +21,7 @@ def register(data: RegisterRequest):
         "username": data.username,
         "email": data.email,
         "password": hashed,
+        "is_admin": data.is_admin,
         "created_at": datetime.utcnow()
     })
     return {"message": "User registered successfully"}
@@ -31,12 +32,13 @@ def login(data: LoginRequest):
     """User login with JWT token"""
     user = users_col.find_one({"email": data.email})
     if not user:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
+        raise HTTPException(status_code=404, detail="User not found. Please register first!")
 
     if not verify_password(data.password, user["password"]):
-        raise HTTPException(status_code=401, detail="Invalid credentials")
+        raise HTTPException(status_code=401, detail="Incorrect password. Please try again.")
 
     username = user.get("username")
+    is_admin = user.get("is_admin", False)
     token = create_token(data.email, username=username)
 
     return {
@@ -44,5 +46,6 @@ def login(data: LoginRequest):
         "token_type": "bearer",
         "expires_in": 12 * 60 * 60,
         "username": username,
+        "is_admin": is_admin,
         "message": "Login successful"
     }
