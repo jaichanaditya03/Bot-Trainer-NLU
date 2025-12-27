@@ -445,10 +445,5 @@ Once the backend is running, access the interactive API documentation:
 *User and system management*
 
 
-## 👨‍💻 Authors
-
-- Jaichan
-
-
 **Made with ❤️ for the NLU community**
 **if this project will help you, give a star to this repo**
