@@ -409,39 +409,39 @@ Once the backend is running, access the interactive API documentation:
 ## 🖼️ Screenshots
 
 ### Login Page
-<!-- ![Login Page](screenshots/login.png) -->
+![Login Page](screenshots/login.png)
 *User authentication interface*
 
 ### Dashboard
-<!-- ![Dashboard](screenshots/dashboard.png) -->
+![Dashboard](screenshots/dashboard.png)
 *Main workspace and dataset management*
 
 ### Annotate
-<!-- ![Data Upload](screenshots/annotate.png) -->
+![Annotate](screenshots/annotate.png)
 *Annotation page*
 
-### Evaluation page
-<!-- ![Evaluation](screenshots/evaluation.png) -->
+### Evaluation Page
+![Evaluation](screenshots/evaluation.png)
 *Model performance*
 
 ### Model Training
-<!-- ![Training](screenshots/activelearning.png) -->
+![Model Training](screenshots/activelearning.png)
 *Model training interface*
 
-### Matrix & comparision
-<!-- ![Training](screenshots/matrix.png) -->
-*Matrix and comparision page*
+### Matrix & Comparison
+![Matrix & Comparison](screenshots/matrix.png)
+*Matrix and comparison page*
 
-### Model comparision
-<!-- ![Training](screenshots/modelcomparision.png) -->
-*Model comparision page*
+### Model Comparison
+![Model Comparison](screenshots/modelcomparision.png)
+*Model comparison page*
 
 ### Feedback
-<!-- ![Training](screenshots/feedback.png) -->
+![Feedback](screenshots/feedback.png)
 *Feedback page*
 
 ### Admin Panel
-<!-- ![Admin Panel](screenshots/admin.png) -->
+![Admin Panel](screenshots/admin.png)
 *User and system management*
 
 
